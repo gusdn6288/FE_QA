@@ -3,48 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="대학생, 부트캠프, 경력사항으로 이어지는 나의 포트폴리오.">
-  <title>대학생 — 나의 포트폴리오</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23ffffff'/%3E%3Cpath d='M10 29V11h11a7 7 0 0 1 0 14h-5v4zm6-10h5a1 1 0 0 0 0-2h-5z' fill='%23252a34'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#050607">
+  <meta name="description" content="김현우 포트폴리오. 소프트웨어 전공, LG U+ 유레카 프론트엔드 프로젝트, 보안성 시험과 문서 자동화 경험을 소개합니다.">
+  <title>대학생 — 김현우 포트폴리오</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23050607'/%3E%3Cpath d='M10 29V11h11a7 7 0 0 1 0 14h-5v4zm6-10h5a1 1 0 0 0 0-2h-5z' fill='%23edf1f7'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
   <script defer src="content.js"></script>
   <script defer src="app.js"></script>
 </head>
 <body>
+  <div class="scene-background" aria-hidden="true">
+    <div class="sky-atmosphere"></div>
+    <div class="sky-sun"></div>
+    <div class="sky-scene sky-scene--day is-active" data-chapter="university">
+      <div class="sky-clouds sky-clouds--far"></div>
+      <div class="sky-clouds sky-clouds--near"></div>
+    </div>
+    <div class="sky-scene sky-scene--sunset" data-chapter="bootcamp">
+      <div class="sky-clouds sky-clouds--far"></div>
+      <div class="sky-clouds sky-clouds--near"></div>
+    </div>
+    <div class="sky-scene sky-scene--night" data-chapter="career">
+      <div class="sky-stars sky-stars--far"></div>
+      <div class="sky-stars sky-stars--near"></div>
+      <div class="sky-moon"></div>
+    </div>
+    <div class="scene-shade"></div>
+  </div>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
   <div class="site-shell">
     <header class="site-header">
-      <a class="brand" href="#university" aria-label="나의 포트폴리오 첫 화면">
+      <a class="brand" href="#university" aria-label="김현우 포트폴리오 첫 화면">
         <span class="brand-mark" aria-hidden="true">p<span>.</span></span>
-        <span class="brand-text">MY PORTFOLIO<span>성장의 기록</span></span>
+        <span class="brand-text">KIM HYUNWOO<span>김현우 · 포트폴리오</span></span>
       </a>
-      <div class="header-note"><span class="short-rule" aria-hidden="true"></span> A JOURNEY IN THREE CHAPTERS</div>
+      <div id="journey-clock" class="journey-clock" role="group" aria-labelledby="clock-description">
+        <span class="clock-label" aria-hidden="true">JOURNEY DATE</span>
+        <time id="journey-date" class="clock-display" datetime="2019-03-01" aria-hidden="true">2019:0301</time>
+        <div class="clock-live-row" aria-hidden="true">
+          <span class="clock-live-dot"></span>
+          <time id="journey-time">00:00:00</time>
+          <span class="clock-live-label">NOW</span>
+        </div>
+        <span id="clock-description" class="sr-only">2019년 3월 1일 · 대전대학교 컴퓨터공학과 입학</span>
+      </div>
       <span class="page-counter" aria-label="총 3개 화면"><span id="counter">01</span><span class="counter-divider">/</span>03</span>
     </header>
 
     <main id="main" tabindex="-1">
       <div class="chapter-stage">
       <section class="chapter" aria-labelledby="chapter-title">
+        <section id="welcome" class="welcome" aria-labelledby="welcome-title">
+          <p class="welcome-eyebrow">SOFTWARE ENGINEER · PORTFOLIO</p>
+          <h1 id="welcome-title" class="welcome-title" aria-label="안녕하세요, 소프트웨어 엔지니어 김현우입니다.">
+            <span class="welcome-line" aria-hidden="true">안녕하세요, 소프트웨어 엔지니어</span>
+            <span class="welcome-line welcome-name" aria-hidden="true">김현우입니다.</span>
+          </h1>
+          <p class="welcome-description">코드로 만들고, 근거로 검증합니다.</p>
+          <button id="welcome-continue" class="welcome-continue" type="button">저의 여정 보기 <span aria-hidden="true">↓</span></button>
+        </section>
+        <div class="chapter-lead">
         <div class="chapter-intro">
           <div class="eyebrow"><span id="chapter-number">CHAPTER 01</span><span class="eyebrow-line" aria-hidden="true"></span><span id="chapter-english" class="chapter-english">UNIVERSITY</span></div>
-          <h1 id="chapter-title">대학생<span class="title-dot" aria-hidden="true">.</span></h1>
-          <p id="chapter-tagline" class="chapter-tagline">가능성을 발견하고,<br>나만의 방향을 찾다.</p>
-          <p id="chapter-description" class="chapter-description">전공 공부부터 새로운 도전까지.<br>배움의 출발점을 담는 공간입니다.</p>
-          <div class="chapter-index" aria-hidden="true"><span id="large-number" class="large-number">01</span><div><span>THE BEGINNING</span><span class="index-line"></span></div></div>
+          <h2 id="chapter-title" class="chapter-title" tabindex="-1">대학생<span class="title-dot" aria-hidden="true">.</span></h2>
+          <p id="chapter-tagline" class="chapter-tagline">컴퓨터공학의 기초 위에,<br>함께 일하는 태도를 쌓다.</p>
+          <p id="chapter-description" class="chapter-description">안녕하세요, 김현우입니다.<br>소프트웨어를 배우고 만드는 경험에서 출발해,<br>지금은 코드와 시험으로 제품의 보안성을 확인합니다.</p>
+          <ul id="chapter-highlights" class="chapter-highlights" aria-label="핵심 이력"></ul>
+        </div>
+
+          <aside class="overview-card" aria-labelledby="overview-title">
+            <div class="card-heading"><span class="section-label">OVERVIEW</span><span class="empty-badge">작성 예정</span></div>
+            <h2 id="overview-title">소프트웨어를 배우다</h2>
+            <dl id="overview-fields" class="overview-fields"></dl>
+          </aside>
         </div>
 
         <div class="chapter-content" id="chapter-content">
-          <article class="overview-card">
-            <div class="card-heading"><span class="section-label">OVERVIEW</span><span class="empty-badge">작성 예정</span></div>
-            <h2 id="overview-title">대학 생활</h2>
-            <dl id="overview-fields" class="overview-fields"></dl>
-          </article>
-          <article class="story-card">
-            <div class="story-heading"><div><span class="section-label" id="story-eyebrow">EXPERIENCES</span><h2 id="story-title">활동과 프로젝트</h2></div><span class="bracket-mark" aria-hidden="true">[ &nbsp; ]</span></div>
+          <section class="history-section" aria-labelledby="story-title">
+            <div class="story-heading"><div><span class="section-label" id="story-eyebrow">MY HISTORY</span><h2 id="story-title">배움이 쌓인 시간</h2></div><span id="history-range" class="history-range">2019 — 2025</span></div>
             <div class="empty-story" id="empty-story"><span class="empty-line-icon" aria-hidden="true"><span></span><span></span><span></span></span><div><h3 id="empty-title">첫 번째 기록을 기다리고 있어요</h3><p id="empty-description">교내 활동, 팀 프로젝트, 배운 점을 담아 주세요.</p></div></div>
-            <div id="entries" class="entries" hidden></div>
-          </article>
+            <ol id="entries" class="entries" hidden></ol>
+          </section>
+          <aside id="credentials-card" class="credentials-card" aria-labelledby="credentials-title" hidden>
+            <span class="section-label">MORE ABOUT MY JOURNEY</span>
+            <h2 id="credentials-title">자격</h2>
+            <ul id="credentials-list" class="credentials-list"></ul>
+          </aside>
           <div class="content-footnote"><span class="tiny-square" aria-hidden="true"></span><span id="footnote">배움과 도전이 쌓이는 곳</span><span class="footnote-number" aria-hidden="true">01 — 03</span></div>
         </div>
       </section>
@@ -59,7 +103,7 @@
         <a href="#bootcamp" class="timeline-stop" data-route="bootcamp"><span class="stop-number" aria-hidden="true">02</span><span class="stop-node" aria-hidden="true"><span></span></span><span class="stop-label">부트캠프</span></a>
         <a href="#career" class="timeline-stop" data-route="career"><span class="stop-number" aria-hidden="true">03</span><span class="stop-node" aria-hidden="true"><span></span></span><span class="stop-label">경력사항</span></a>
       </nav>
-      <span class="footer-caption">계속 이어질 이야기</span>
+      <span class="footer-caption">학습에서 개발, 검증으로</span>
     </footer>
   </div>
   <span id="route-announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></span>

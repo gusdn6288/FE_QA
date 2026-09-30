@@ -1,57 +1,495 @@
-/*
- * 포트폴리오 내용은 이 파일에서 수정합니다.
- * fields의 value가 비어 있으면 '등록 예정'으로 표시됩니다.
- * entries가 비어 있으면 각 화면의 안내 문구가 표시됩니다.
- *
- * entries 작성 예시 (대괄호 안을 실제 내용으로 바꿔 주세요):
- * { title: '프로젝트명', meta: '기간 · 담당 역할',
- *   description: '진행한 일과 배운 점', url: 'https://example.com' }
- * url은 선택 사항입니다. 없는 경우 생략하세요.
- */
+/* 제공된 자기소개서와 증빙자료 기반. 출처와 날짜 선택 기준: CONTENT_NOTES.md */
 window.portfolioContent = {
-  university: {
-    title: '대학생', english: 'UNIVERSITY', accent: '#252a34', accentRgb: '37,42,52',
-    tagline: '가능성을 발견하고,\n나만의 방향을 찾다.',
-    description: '전공 공부부터 새로운 도전까지.\n배움의 출발점을 담는 공간입니다.',
-    indexLabel: 'THE BEGINNING', overviewTitle: '대학 생활',
-    fields: [
-      { label: '학교 · 전공', value: '' },
-      { label: '재학 기간', value: '' },
-      { label: '관심 분야', value: '' }
+  "university": {
+    "title": "대학생",
+    "english": "UNIVERSITY",
+    "accent": "#cbdaf0",
+    "accentRgb": "203,218,240",
+    "tagline": "컴퓨터공학의 기초 위에,\n함께 일하는 태도를 쌓다.",
+    "description": "안녕하세요, 김현우입니다.\n소프트웨어를 배우고 만드는 경험에서 출발해,\n지금은 코드와 시험으로 제품의 보안성을 확인합니다.",
+    "indexLabel": "LEARN THE FOUNDATIONS",
+    "overviewTitle": "소프트웨어를 배우다",
+    "highlights": [
+      {
+        "value": "공학사",
+        "label": "소프트웨어전공"
+      },
+      {
+        "value": "2019–2025",
+        "label": "대학에서의 배움"
+      }
     ],
-    storyEyebrow: 'EXPERIENCES', storyTitle: '활동과 프로젝트',
-    emptyTitle: '첫 번째 기록을 기다리고 있어요',
-    emptyDescription: '교내 활동, 팀 프로젝트, 배운 점을 담아 주세요.',
-    footnote: '배움과 도전이 쌓이는 곳', entries: []
+    "fields": [
+      {
+        "label": "최종 학력",
+        "value": "국립한국교통대학교 · 소프트웨어전공"
+      },
+      {
+        "label": "재학 기간",
+        "value": "2023.03.02 – 2025.02.20 · 편입 후 졸업"
+      },
+      {
+        "label": "이전 학교",
+        "value": "대전대학교 · 컴퓨터공학과\n2019.03.01 – 2023.02.15 · 편입 전 재학"
+      },
+      {
+        "label": "학습 분야",
+        "value": "소프트웨어공학 · 데이터베이스 · 운영체제 · 컴퓨터네트워크 · 컴퓨터보안"
+      }
+    ],
+    "storyEyebrow": "MY HISTORY",
+    "storyTitle": "배움이 쌓인 시간",
+    "emptyTitle": "",
+    "emptyDescription": "",
+    "footnote": "기초를 배우고, 맡은 일을 끝까지 마무리하는 태도",
+    "entries": [
+      {
+        "title": "대전대학교 컴퓨터공학과 입학",
+        "date": {
+          "year": "2019",
+          "label": "03.01",
+          "iso": "2019-03-01"
+        },
+        "meta": "전공의 시작",
+        "description": "컴퓨터공학을 전공하며 프로그래밍과 문제 해결의 기초를 배웠습니다. 2023년 국립한국교통대학교로 편입하기 전까지 재학했습니다.",
+        "bullets": [
+          "자료구조·알고리즘·C/C++·Java 프로그래밍 학습"
+        ],
+        "tags": [
+          "컴퓨터공학",
+          "프로그래밍"
+        ]
+      },
+      {
+        "title": "국립한국교통대학교 소프트웨어전공 편입",
+        "date": {
+          "year": "2023",
+          "label": "03.02",
+          "iso": "2023-03-02"
+        },
+        "meta": "배움의 확장",
+        "description": "소프트웨어전공으로 편입해 시스템을 이해하고 개발 과정을 설계하는 공부를 이어갔습니다.",
+        "bullets": [
+          "데이터베이스·운영체제·네트워크로 시스템을 이해하는 시야 확장",
+          "소프트웨어공학·컴퓨터보안·PM실무 등 개발과 협업에 필요한 과목 이수"
+        ],
+        "tags": [
+          "소프트웨어공학",
+          "데이터베이스",
+          "컴퓨터보안"
+        ]
+      },
+      {
+        "title": "8,000권의 도서, 함께 마무리한 일",
+        "meta": "교내 도서관 근로",
+        "description": "대학 동기들과 약 8,000권의 폐기 도서를 분류하고 정리했습니다. 일을 나누고 처리 순서를 정한 뒤, 제 작업을 마치면 동료의 남은 작업을 도왔습니다.",
+        "outcome": "예상보다 빠르게 전체 업무를 마무리했고, 팀장님께 ‘결국 해내는 사람’이라는 평가를 받았습니다.",
+        "tags": [
+          "책임감",
+          "협업",
+          "업무 조율"
+        ],
+        "date": {
+          "year": "2023",
+          "label": "09 — 2025.01",
+          "iso": "2023-09"
+        }
+      },
+      {
+        "title": "학과 학생회 문화부장",
+        "meta": "학과 학생회 · 문화부장",
+        "description": "학과 학생회에서 문화부장으로 활동했습니다. 전공 공부와 함께 공동체 안에서 역할을 맡고 구성원들과 소통하는 경험을 쌓았습니다.",
+        "date": {
+          "year": "2024",
+          "label": "01 — 2025.01",
+          "iso": "2024-01"
+        }
+      },
+      {
+        "title": "정보처리기사 취득",
+        "date": {
+          "year": "2024",
+          "label": "09.10",
+          "iso": "2024-09-10"
+        },
+        "meta": "자격 취득",
+        "description": "정보처리기사 자격을 취득하며 소프트웨어 개발과 정보시스템에 대한 기초를 다졌습니다."
+      },
+      {
+        "title": "국립한국교통대학교 졸업",
+        "date": {
+          "year": "2025",
+          "label": "02.20",
+          "iso": "2025-02-20"
+        },
+        "meta": "소프트웨어전공 · 공학사",
+        "description": "소프트웨어전공 공학사 학위를 취득했습니다. 대학에서 쌓은 전공 지식을 바탕으로 프론트엔드 개발과 보안성 검증으로 경험을 넓혀가고 있습니다."
+      }
+    ],
+    "credentials": null,
+    "historyRange": "2019 — 2025"
   },
-  bootcamp: {
-    title: '부트캠프', english: 'BOOTCAMP', accent: '#252a34', accentRgb: '37,42,52',
-    tagline: '배움을 실전으로,\n함께 만드는 경험.',
-    description: '집중해서 배우고, 함께 고민한 시간.\n실전으로 이어지는 과정을 담습니다.',
-    indexLabel: 'LEARN BY BUILDING', overviewTitle: '부트캠프 과정',
-    fields: [
-      { label: '교육 기관', value: '' },
-      { label: '참여 기간', value: '' },
-      { label: '학습 기술', value: '' }
+  "bootcamp": {
+    "title": "부트캠프",
+    "english": "BOOTCAMP",
+    "accent": "#cbdaf0",
+    "accentRgb": "203,218,240",
+    "tagline": "배움을 화면으로,\n아이디어를 서비스로.",
+    "description": "LG U+ 유레카 2기에서 프론트엔드 개발을 배웠습니다.\nUI/UX 설계부터 기능 구현과 API 연동까지,\n팀과 함께 세 개의 웹 서비스를 만들었습니다.",
+    "indexLabel": "LEARN BY BUILDING",
+    "overviewTitle": "LG U+ 유레카 2기",
+    "highlights": [
+      {
+        "value": "1,080h",
+        "label": "교육 이수"
+      },
+      {
+        "value": "3",
+        "label": "팀 프로젝트"
+      }
     ],
-    storyEyebrow: 'PROJECTS', storyTitle: '학습과 팀 프로젝트',
-    emptyTitle: '함께 만든 경험을 기록해 보세요',
-    emptyDescription: '프로젝트, 맡은 역할, 해결한 문제를 담아 주세요.',
-    footnote: '배운 것을 직접 만들어 보는 시간', entries: []
+    "fields": [
+      {
+        "label": "교육 과정",
+        "value": "[LG유플러스] 유레카 프론트엔드 개발자"
+      },
+      {
+        "label": "교육 기관",
+        "value": "멀티캠퍼스"
+      },
+      {
+        "label": "교육 기간",
+        "value": "2025.01.20 – 2025.08.12 · 수료"
+      },
+      {
+        "label": "주요 기술",
+        "value": "React · JavaScript · Tailwind CSS · Vite · Figma"
+      }
+    ],
+    "storyEyebrow": "MY HISTORY",
+    "storyTitle": "배움에서 완성까지",
+    "emptyTitle": "",
+    "emptyDescription": "",
+    "footnote": "프로젝트별 개인 담당 범위를 중심으로 정리했습니다",
+    "entries": [
+      {
+        "title": "LG U+ 유레카 2기 시작",
+        "date": {
+          "year": "2025",
+          "label": "01.20",
+          "iso": "2025-01-20"
+        },
+        "meta": "멀티캠퍼스 · 프론트엔드 개발자 과정",
+        "description": "프론트엔드 개발 교육을 시작했습니다. UI/UX 설계, React 기반 기능 구현, API 연동을 배우고 팀 프로젝트에 적용했습니다."
+      },
+      {
+        "title": "GitPulse",
+        "subtitle": "GitHub 활동 기반 개발자 협업 서비스",
+        "meta": "미니 프로젝트 · 4명 · 팀장",
+        "description": "팀원의 GitHub 활동을 수집하고 시각화해 개발 습관과 협업 패턴을 살펴보는 서비스입니다. 팀장으로 디자인과 로그인·회원가입, IT 뉴스 기능을 담당했습니다.",
+        "bullets": [
+          "Figma 프로토타입과 모바일·PC UI/UX 설계",
+          "GitHub OAuth 기반 로그인·회원가입 구현",
+          "IT 뉴스 페이지 및 백엔드 연동을 위한 DB 설계"
+        ],
+        "tags": [
+          "React",
+          "JavaScript",
+          "Vite",
+          "GitHub OAuth",
+          "Figma"
+        ],
+        "details": [
+          {
+            "title": "인증 흐름 이해와 구현",
+            "text": "인증 요청, 코드 발급, 토큰 교환, API 접근 순서를 이해하고 GitHub OAuth 로그인 흐름을 구현했습니다."
+          },
+          {
+            "title": "함께 다듬는 인터페이스",
+            "text": "팀원들과 화면의 선과 여백까지 논의하고 피드백을 반영했습니다. RSS 기반 IT 뉴스를 카드로 보여주고 기업별 소식을 탐색할 수 있도록 구성했습니다."
+          }
+        ],
+        "links": [
+          {
+            "label": "GitHub",
+            "url": "https://github.com/GitPulse-04"
+          }
+        ],
+        "date": {
+          "year": "2025",
+          "label": "05.07 — 05.20",
+          "iso": "2025-05-07"
+        }
+      },
+      {
+        "title": "UNOA",
+        "subtitle": "AI 기반 통신 요금제 추천 서비스",
+        "meta": "종합 프로젝트 · 5명 · 프론트엔드 개발",
+        "description": "사용자의 통신 사용 패턴에 맞는 LG U+ 요금제를 추천하고 비교하는 서비스입니다. 메인 화면과 요금제 비교 목록, 챗봇 기능 일부를 구현했습니다.",
+        "bullets": [
+          "UI/UX 및 컴포넌트·라우트 구조 설계",
+          "메인 페이지와 요금제 비교 목록 구현",
+          "요금제 챗봇 공동 구현 · 담당 비중 50%"
+        ],
+        "tags": [
+          "React",
+          "JavaScript",
+          "Tailwind CSS",
+          "Socket.IO",
+          "Vite"
+        ],
+        "details": [
+          {
+            "title": "대화를 서비스 화면으로 연결",
+            "text": "실시간 응답 스트리밍과 요금제 카드 UI를 적용하고, 대화 기록 저장을 통해 페이지가 다시 렌더링되어도 대화를 이어갈 수 있도록 구성했습니다."
+          },
+          {
+            "title": "비교하기 쉬운 정보 구성",
+            "text": "요금제 정보를 그래프로 비교하는 화면과 AI 비교 설명을 연결했습니다. 메인 페이지에는 스크롤과 SVG 선 그리기 애니메이션을 적용했습니다."
+          }
+        ],
+        "links": [
+          {
+            "label": "GitHub",
+            "url": "https://github.com/UNOA-Project"
+          },
+          {
+            "label": "소개 영상",
+            "url": "https://www.youtube.com/watch?v=4gnVpxlb56A"
+          }
+        ],
+        "date": {
+          "year": "2025",
+          "label": "06.09 — 06.27",
+          "iso": "2025-06-09"
+        }
+      },
+      {
+        "title": "U-TONG",
+        "subtitle": "무선 인터넷 데이터 거래 플랫폼",
+        "meta": "최종 프로젝트 · 7명 · 프론트엔드 팀장",
+        "description": "모바일 데이터를 주식처럼 거래하고 시세를 확인하는 웹 서비스입니다. 프론트엔드 팀장으로 UI/UX 설계와 충전·쿠폰·상점 기능을 담당했습니다.",
+        "bullets": [
+          "Figma 기반 프로토타입과 모바일·PC 반응형 UI/UX 설계",
+          "포인트 충전, 쿠폰, 포인트 상점과 기프티콘 보관함 구현",
+          "서비스 가이드 제작 및 백엔드 API 연동"
+        ],
+        "tags": [
+          "React",
+          "JavaScript",
+          "Tailwind CSS",
+          "React Router",
+          "Vite",
+          "Figma"
+        ],
+        "details": [
+          {
+            "title": "사용자에게 일관된 상태 전달",
+            "text": "결제·구매·쿠폰 사용 이후 서버 응답을 화면 상태에 반영하고, 보관함에서 상품과 쿠폰의 사용 상태를 확인할 수 있도록 구현했습니다."
+          },
+          {
+            "title": "매일 30분, 진행 상황 공유",
+            "text": "비대면 협업에서 기능 연결이 늦어지는 문제를 줄이기 위해 매일 아침 데일리 스크럼을 운영했습니다. 완료한 일, 진행 중인 일, 막힌 부분을 공유하고 결정 사항은 Notion, API 명세는 Swagger를 통해 함께 확인했습니다."
+          }
+        ],
+        "links": [
+          {
+            "label": "GitHub",
+            "url": "https://github.com/Ureka-final-project-team-3"
+          },
+          {
+            "label": "소개 영상",
+            "url": "https://youtu.be/GxRtGOvDoJU"
+          }
+        ],
+        "date": {
+          "year": "2025",
+          "label": "06.30 — 08.07",
+          "iso": "2025-06-30"
+        }
+      },
+      {
+        "title": "1,080시간의 교육, 세 프로젝트를 마치다",
+        "date": {
+          "year": "2025",
+          "label": "08.12",
+          "iso": "2025-08-12"
+        },
+        "meta": "LG U+ 유레카 프론트엔드 개발자 과정 수료",
+        "description": "총 1,080시간의 교육을 이수했습니다. 기획을 화면으로 옮기는 일부터 기능 구현과 팀 협업까지, 실제 서비스를 함께 만드는 경험을 쌓았습니다."
+      }
+    ],
+    "credentials": {
+      "title": "협업 방식",
+      "items": [
+        {
+          "title": "말로 공유하고, 기록으로 연결합니다",
+          "meta": "Daily Scrum · Notion · Swagger · GitHub",
+          "description": "진행 상황과 어려움은 함께 이야기하고, 개발 환경과 결정 사항은 기록으로 남겼습니다. 서로의 작업을 이해하고 기능을 연결하는 데 집중했습니다."
+        }
+      ]
+    },
+    "historyRange": "2025.01 — 2025.08"
   },
-  career: {
-    title: '경력사항', english: 'CAREER', accent: '#252a34', accentRgb: '37,42,52',
-    tagline: '경험을 쌓고,\n더 나은 가치를 만들다.',
-    description: '현장에서 마주한 문제와 만들어 낸 변화.\n일하며 쌓아 온 경험을 담습니다.',
-    indexLabel: 'THE NEXT CHAPTER', overviewTitle: '업무 경험',
-    fields: [
-      { label: '회사 · 직무', value: '' },
-      { label: '근무 기간', value: '' },
-      { label: '주요 업무', value: '' }
+  "career": {
+    "title": "경력사항",
+    "english": "CAREER",
+    "accent": "#cbdaf0",
+    "accentRgb": "203,218,240",
+    "tagline": "코드와 시험으로,\n신뢰를 확인합니다.",
+    "description": "요구사항을 소스코드와 실제 동작에 연결하고,\n확인한 결과를 판단 근거와 함께 설명합니다.\n개발 경험을 살려 반복되는 업무도 개선합니다.",
+    "indexLabel": "VERIFY WITH EVIDENCE",
+    "overviewTitle": "한국정보통신기술협회",
+    "highlights": [
+      {
+        "value": "보안성 시험",
+        "label": "요구사항부터 증적까지"
+      },
+      {
+        "value": "업무 자동화",
+        "label": "반복 입력 절차 개선"
+      }
     ],
-    storyEyebrow: 'SELECTED WORK', storyTitle: '프로젝트와 성과',
-    emptyTitle: '경험이 다음 이야기가 됩니다',
-    emptyDescription: '담당한 업무, 기여한 부분, 주요 성과를 담아 주세요.',
-    footnote: '경험으로 증명하는 나의 성장', entries: []
+    "fields": [
+      {
+        "label": "소속",
+        "value": "금융보안시험팀"
+      },
+      {
+        "label": "근무 기간",
+        "value": "2025.11.21 – 현재"
+      },
+      {
+        "label": "담당 업무",
+        "value": "신용카드 단말기 인증 관련 보안성 시험"
+      },
+      {
+        "label": "시험 대상",
+        "value": "CAT 단말기 · POS 소프트웨어 · 카드리더기"
+      }
+    ],
+    "storyEyebrow": "MY HISTORY",
+    "storyTitle": "검증 경험의 기록",
+    "emptyTitle": "",
+    "emptyDescription": "",
+    "footnote": "확인된 사실과 판단 근거를 연결하는 검증",
+    "entries": [
+      {
+        "title": "한국정보통신기술협회에서 보안성 시험 시작",
+        "meta": "금융보안시험팀 · 보안성 시험",
+        "description": "여신금융협회 인증을 위한 보안성 시험을 수행합니다. 최초 등록 단말기의 소스코드에서 민감정보 처리 흐름을 추적하고, 보안 기능이 기술기준을 충족하는지 확인합니다.",
+        "bullets": [
+          "암호화·마스킹, 메모리 내 민감정보 처리, 무결성 검증 확인",
+          "통신 데이터 분석 및 메모리 내 민감정보 잔존 여부 점검",
+          "코드 검토 내용과 시험 결과를 대조해 증적·결과보고서 작성"
+        ],
+        "tags": [
+          "Tera Term",
+          "Wireshark",
+          "Device Monitoring Studio",
+          "DumpIt",
+          "HxD"
+        ],
+        "details": [
+          {
+            "title": "검증 흐름",
+            "text": "요구사항 확인 → 기능 및 소스코드 검증 → 결과 대조 → 증적과 판단 근거 정리. 시험 항목마다 확인한 내용과 근거를 연결해 설명합니다."
+          },
+          {
+            "title": "결과를 전달하는 기준",
+            "text": "관련 코드, 시험 조건, 확인 결과를 기록합니다. 확인된 사실과 추가 검토가 필요한 사항을 구분해 동료와 개발자가 후속 조치를 판단할 수 있도록 전달하는 것을 중요하게 생각합니다."
+          }
+        ],
+        "date": {
+          "year": "2025",
+          "label": "11.21 — 현재",
+          "iso": "2025-11-21"
+        }
+      },
+      {
+        "title": "측정불확도 추정(공통)",
+        "date": {
+          "year": "2025",
+          "label": "12.01 — 12.03",
+          "iso": "2025-12-01"
+        },
+        "meta": "한국인정지원센터 · 교육 이수 및 시험 합격",
+        "description": "측정불확도 추정(공통) 교육과정을 이수하고 시험에 합격했습니다. 합격증은 2025년 12월 8일 발급되었습니다."
+      },
+      {
+        "title": "KS Q ISO/IEC 17025 운영실무 교육(시험)",
+        "date": {
+          "year": "2025",
+          "label": "12.08 — 12.10",
+          "iso": "2025-12-08"
+        },
+        "meta": "한국인정지원센터 · 교육 이수 및 시험 합격",
+        "description": "KS Q ISO/IEC 17025 운영실무 교육(시험)을 이수하고 시험에 합격했습니다. 합격증은 2025년 12월 11일 발급되었습니다."
+      },
+      {
+        "title": "시험 문서 자동작성 프로그램",
+        "meta": "업무 개선 · Python · 한컴오피스 COM Automation",
+        "description": "시험접수증, 제출물 관리대장, 인수·반납증에 같은 정보를 반복 입력하던 업무를 개선했습니다. 공통 정보를 한 번 입력하면 문서별 지정 위치에 반영하고 저장하도록 구현했습니다.",
+        "bullets": [
+          "문서별 공통 입력 항목과 반영 위치 정리",
+          "공통 데이터와 문서별 양식·처리 규칙 분리",
+          "Codex를 개발 보조 도구로 활용해 Python 기반 프로그램 구현"
+        ],
+        "outcome": "기존 약 20분이 걸리던 개별 입력 절차를 공통 정보 입력과 생성 결과 확인 중심의 흐름으로 바꾸었습니다.",
+        "tags": [
+          "Python",
+          "HWP Automation",
+          "문서 생성",
+          "업무 개선"
+        ],
+        "details": [
+          {
+            "title": "문제",
+            "text": "제품명·접수번호·업체명을 여러 문서에 옮겨 적는 과정에서 오타와 표기 차이가 발생했습니다. 제품 유형에 따라 양식과 입력 위치도 달랐습니다."
+          },
+          {
+            "title": "구현",
+            "text": "업무 현황판의 접수 정보를 조회하고 문서별 양식을 적용하도록 구성했습니다. PDF OCR과 구형 인코딩 복원으로 추출을 보완하고, 양식 구조가 변경되면 문서 생성을 중단하도록 했습니다."
+          },
+          {
+            "title": "개선 방향",
+            "text": "반복 입력을 줄이고 생성된 문서의 입력값과 서식을 확인하는 흐름을 만들었습니다. 시험 업무를 이해한 경험을 개발로 연결한 사례입니다."
+          }
+        ],
+        "date": {
+          "year": "재직 중",
+          "label": "업무 개선 경험"
+        }
+      },
+      {
+        "title": "다음 목표: 발전 분야의 안전성과 보안성 검증",
+        "meta": "지원 방향 · 앞으로의 성장 목표",
+        "description": "코드 분석과 보안성 시험 경험을 원자력 소프트웨어 V&V와 원자력·화력 제어시스템의 사이버보안 검증으로 확장하고 싶습니다.",
+        "details": [
+          {
+            "title": "배우고 싶은 분야",
+            "text": "안전 관련 요구사항이 설계·구현·시험으로 이어지는 과정을 익히고, 제어시스템의 계정·접근권한·서비스 설정과 보안 조치가 정상 동작에 미치는 영향을 함께 살피는 역량을 기르고자 합니다."
+          },
+          {
+            "title": "입사 후 계획",
+            "text": "제어시스템의 구조와 운영 특성, 팀의 검증 절차와 산출물 기준을 먼저 익히겠습니다. 실제 업무에 적용되는 기준부터 학습하고 시험 조건과 결과, 판단 근거를 명확히 기록하겠습니다."
+          },
+          {
+            "title": "일하는 태도",
+            "text": "맡은 일을 끝까지 마무리하고 동료의 어려움도 살핍니다. 끝난 일을 오래 되짚는 성향은 동료의 피드백을 받아 다음 작업에서 바꿀 점을 정리하고 실행하는 방식으로 보완하고 있습니다."
+          },
+          {
+            "title": "장기적인 기여",
+            "text": "추가 검증이 필요한 부분을 스스로 찾아내고, 반복적인 문서 작성과 데이터 관리 절차를 개선해 동료들이 검증에 집중할 수 있는 환경을 만들고 싶습니다."
+          }
+        ],
+        "date": {
+          "year": "앞으로",
+          "label": "다음 성장 목표"
+        }
+      }
+    ],
+    "credentials": null,
+    "historyRange": "2025 — PRESENT"
   }
 };
