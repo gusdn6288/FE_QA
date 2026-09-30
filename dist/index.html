@@ -15,20 +15,19 @@
   <div class="scene-background" aria-hidden="true">
     <div class="sky-atmosphere"></div>
     <div class="sky-sun"></div>
-    <div class="sky-scene sky-scene--day is-active" data-chapter="university">
+    <div class="sky-scene sky-scene--day" data-sky="day">
       <div class="sky-clouds sky-clouds--far"></div>
       <div class="sky-clouds sky-clouds--near"></div>
     </div>
-    <div class="sky-scene sky-scene--sunset" data-chapter="bootcamp">
+    <div class="sky-scene sky-scene--sunset" data-sky="sunset">
       <div class="sky-clouds sky-clouds--far"></div>
       <div class="sky-clouds sky-clouds--near"></div>
     </div>
-    <div class="sky-scene sky-scene--night" data-chapter="career">
+    <div class="sky-scene sky-scene--night" data-sky="night">
       <div class="sky-stars sky-stars--far"></div>
       <div class="sky-stars sky-stars--near"></div>
       <div class="sky-moon"></div>
     </div>
-    <div class="scene-shade"></div>
   </div>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
   <div class="site-shell">
@@ -37,20 +36,10 @@
         <span class="brand-mark" aria-hidden="true">p<span>.</span></span>
         <span class="brand-text">KIM HYUNWOO<span>김현우 · 포트폴리오</span></span>
       </a>
-      <div id="journey-clock" class="journey-clock" role="group" aria-labelledby="clock-description">
-        <span class="clock-label" aria-hidden="true">JOURNEY DATE</span>
-        <time id="journey-date" class="clock-display" datetime="2019-03-01" aria-hidden="true">2019:0301</time>
-        <div class="clock-live-row" aria-hidden="true">
-          <span class="clock-live-dot"></span>
-          <time id="journey-time">00:00:00</time>
-          <span class="clock-live-label">NOW</span>
-        </div>
-        <span id="clock-description" class="sr-only">2019년 3월 1일 · 대전대학교 컴퓨터공학과 입학</span>
-      </div>
       <span class="page-counter" aria-label="총 3개 화면"><span id="counter">01</span><span class="counter-divider">/</span>03</span>
     </header>
 
-    <main id="main" tabindex="-1">
+    <main id="main" tabindex="0" aria-label="포트폴리오 본문">
       <div class="chapter-stage">
       <section class="chapter" aria-labelledby="chapter-title">
         <section id="welcome" class="welcome" aria-labelledby="welcome-title">
@@ -103,7 +92,16 @@
         <a href="#bootcamp" class="timeline-stop" data-route="bootcamp"><span class="stop-number" aria-hidden="true">02</span><span class="stop-node" aria-hidden="true"><span></span></span><span class="stop-label">부트캠프</span></a>
         <a href="#career" class="timeline-stop" data-route="career"><span class="stop-number" aria-hidden="true">03</span><span class="stop-node" aria-hidden="true"><span></span></span><span class="stop-label">경력사항</span></a>
       </nav>
-      <span class="footer-caption">학습에서 개발, 검증으로</span>
+      <div id="journey-clock" class="journey-clock" role="group" aria-labelledby="clock-description">
+        <span class="clock-label" aria-hidden="true">JOURNEY DATE</span>
+        <time id="journey-date" class="clock-display" datetime="2019-03-01" aria-hidden="true">2019:0301</time>
+        <div class="clock-live-row" aria-hidden="true">
+          <span class="clock-live-dot"></span>
+          <time id="journey-time">00:00:00</time>
+          <span class="clock-live-label">NOW</span>
+        </div>
+        <span id="clock-description" class="sr-only">2019년 3월 1일 · 대전대학교 컴퓨터공학과 입학</span>
+      </div>
     </footer>
   </div>
   <span id="route-announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></span>

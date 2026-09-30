@@ -5,22 +5,24 @@
   const links = [...document.querySelectorAll('.timeline-stop')];
   const skyScenes = [...document.querySelectorAll('.sky-scene')];
   const skyBackground = document.querySelector('.scene-background');
-  const skyRanges = { university: [.22, .60], bootcamp: [.60, 1.02], career: [1.02, 1.18] };
+  const themeStyle = document.documentElement.style;
+  let themeTargets = [];
+  let currentSkyTheme = null;
   const skyPalette = [
+    { phase: -.18, top: [5,11,27], middle: [12,20,43], bottom: [24,30,55], sun: [232,126,93], glow: [76,94,156] },
     { phase: -.08, top: [19,30,56], middle: [117,94,128], bottom: [223,160,118], sun: [255,195,127], glow: [251,173,111] },
-    { phase: .22, top: [40,98,143], middle: [96,155,194], bottom: [181,211,223], sun: [255,242,210], glow: [255,219,165] },
-    { phase: .44, top: [40,98,143], middle: [96,155,194], bottom: [181,211,223], sun: [255,248,228], glow: [239,230,200] },
-    { phase: .60, top: [48,83,130], middle: [143,145,165], bottom: [230,191,158], sun: [255,232,185], glow: [244,210,160] },
+    { phase: .22, top: [118,180,220], middle: [157,204,231], bottom: [217,236,246], sun: [255,242,210], glow: [255,219,165] },
+    { phase: .44, top: [112,174,215], middle: [151,198,229], bottom: [210,230,242], sun: [255,248,228], glow: [239,230,200] },
+    { phase: .60, top: [108,167,211], middle: [151,198,227], bottom: [214,230,237], sun: [255,244,216], glow: [255,225,178] },
+    { phase: .75, top: [64,106,151], middle: [172,170,176], bottom: [241,201,165], sun: [255,232,185], glow: [244,210,160] },
     { phase: .87, top: [40,43,80], middle: [181,108,111], bottom: [207,146,109], sun: [255,198,140], glow: [250,159,92] },
-    { phase: 1.02, top: [7,16,34], middle: [17,27,53], bottom: [30,37,65], sun: [232,126,93], glow: [76,94,156] },
+    { phase: 1.10, top: [7,16,34], middle: [17,27,53], bottom: [30,37,65], sun: [232,126,93], glow: [76,94,156] },
     { phase: 1.18, top: [5,11,27], middle: [12,20,43], bottom: [24,30,55], sun: [232,126,93], glow: [76,94,156] }
   ];
-  let skyPhase = null;
-  let skyTarget = null;
-  let skyVelocity = 0;
-  let skyPreviousTime = null;
-  let skyFrame = null;
-  let skyIntro = false;
+  // Local wall-clock hours, not geographic sunrise/sunset estimates.
+  const skyHours = [[0,-.18], [5,-.18], [6,-.08], [8,.22], [12,.5], [16,.72], [18,.92], [20,1.18], [24,1.18]];
+  let skyTimer = null;
+  const scrollViewport = document.getElementById('main');
   const chapter = document.querySelector('.chapter');
   const stage = document.querySelector('.chapter-stage');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -60,6 +62,112 @@
     return amount * amount * (3 - 2 * amount);
   }
 
+  function mixColor(start, end, amount) {
+    return start.map((value, index) => Math.round(value + (end[index] - value) * amount));
+  }
+
+  function luminance(color) {
+    const linear = color.map(value => {
+      const channel = value / 255;
+      return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
+    });
+    return linear[0] * .2126 + linear[1] * .7152 + linear[2] * .0722;
+  }
+
+  function colorContrast(foreground, background) {
+    const first = luminance(foreground);
+    const second = luminance(background);
+    return (Math.max(first, second) + .05) / (Math.min(first, second) + .05);
+  }
+
+  function themeForBackground(background, warmth) {
+    const dark = mixColor([4,13,22], [22,8,3], warmth);
+    const light = mixColor([250,253,255], [255,253,247], warmth);
+    let darkInk = colorContrast(dark, background) > colorContrast(light, background);
+    let text = darkInk ? dark : light;
+    if (colorContrast(text, background) < 4.5) {
+      darkInk = colorContrast([0,0,0], background) > colorContrast([255,255,255], background);
+      text = darkInk ? [0,0,0] : [255,255,255];
+    }
+    // Keep secondary text readable without placing a dark layer over the sky.
+    const readable = color => {
+      for (let step = 0; step <= 10; step++) {
+        const candidate = mixColor(color, text, step / 10);
+        if (colorContrast(candidate, background) >= 4.5) return candidate;
+      }
+      return text;
+    };
+    return {
+      darkInk, text,
+      muted: readable(darkInk ? mixColor([25,47,65], [61,36,27], warmth) : mixColor([221,235,250], [248,232,213], warmth)),
+      faint: readable(darkInk ? mixColor([38,60,78], [75,47,35], warmth) : mixColor([205,225,245], [237,217,193], warmth)),
+      accent: readable(darkInk ? mixColor([20,66,98], [93,45,25], warmth) : mixColor([175,218,252], [255,207,149], warmth)),
+      surface: darkInk ? mixColor([233,245,252], [255,235,215], warmth) : mixColor([12,28,48], [50,28,36], warmth),
+      status: readable(darkInk ? [20,89,69] : [157,231,196]),
+      inverse: darkInk ? light : dark
+    };
+  }
+
+  function paintTheme(style, palette) {
+    const rgb = name => palette[name].join(',');
+    const properties = {
+      '--text': `rgb(${rgb('text')})`, '--muted': `rgb(${rgb('muted')})`,
+      '--faint': `rgb(${rgb('faint')})`, '--accent': `rgb(${rgb('accent')})`,
+      '--accent-rgb': rgb('accent'), '--surface': `rgba(${rgb('surface')},.84)`,
+      '--on-accent': `rgb(${rgb('inverse')})`,
+      '--border': `rgba(${rgb('accent')},.28)`, '--line': `rgba(${rgb('accent')},.4)`,
+      '--status': `rgb(${rgb('status')})`, '--status-rgb': rgb('status'),
+      '--label-shadow': `0 1px 8px rgba(${rgb('inverse')},.28)`
+    };
+    Object.entries(properties).forEach(([name, value]) => {
+      if (style.getPropertyValue(name) !== value) style.setProperty(name, value);
+    });
+  }
+
+  function drawTheme(sky, phase) {
+    currentSkyTheme = { sky, phase };
+    const warmth = skyBlend(.65, .88, phase) * (1 - skyBlend(.90, 1.10, phase));
+    const base = themeForBackground(sky.middle, warmth);
+    paintTheme(themeStyle, base);
+    themeStyle.colorScheme = base.darkInk ? 'light' : 'dark';
+    themeStyle.setProperty('--background', `rgb(${sky.bottom.join(',')})`);
+    themeTargets.forEach(target => {
+      if (!target.visible) return;
+      const background = target.y <= .55
+        ? mixColor(sky.top, sky.middle, target.y / .55)
+        : mixColor(sky.middle, sky.bottom, (target.y - .55) / .45);
+      paintTheme(target.node.style, themeForBackground(background, warmth));
+    });
+  }
+
+  function measureThemeTargets() {
+    const height = Math.max(1, window.innerHeight);
+    const viewport = scrollViewport.getBoundingClientRect();
+    themeTargets.forEach(target => {
+      const rect = target.node.getBoundingClientRect();
+      const fixed = target.node === header || target.node === footer || target.node === journeyClock;
+      const visibleTop = fixed ? 0 : Math.max(0, viewport.top);
+      const visibleBottom = fixed ? height : Math.min(height, viewport.bottom);
+      target.visible = rect.bottom > visibleTop && rect.top < visibleBottom;
+      const top = Math.max(visibleTop, rect.top);
+      const bottom = Math.min(visibleBottom, rect.bottom);
+      target.y = Math.max(0, Math.min(1, (top + bottom) / 2 / height));
+    });
+  }
+
+  function prepareThemeTargets() {
+    const cards = '.overview-card, .credentials-card, .entry-outcome, .entry-tags';
+    const text = 'h1, h2, h3, h4, p, summary, .entry-bullets li, .entry-links a, .history-date, .history-node, .eyebrow, .chapter-highlights li, .section-label, .history-range, .content-footnote, .welcome-continue';
+    const nodes = [header, footer, journeyClock, ...chapter.querySelectorAll(cards),
+      ...[...chapter.querySelectorAll(text)].filter(node => !node.closest(cards))];
+    themeTargets = [...new Set(nodes)].map(node => {
+      node.classList.add('sky-toned');
+      return { node, y: .5, visible: true };
+    });
+    measureThemeTargets();
+    if (currentSkyTheme) drawTheme(currentSkyTheme.sky, currentSkyTheme.phase);
+  }
+
   function drawSky(phase) {
     const bounded = Math.max(skyPalette[0].phase, Math.min(skyPalette[skyPalette.length - 1].phase, phase));
     let nextIndex = skyPalette.findIndex(stop => stop.phase >= bounded);
@@ -67,89 +175,50 @@
     const previous = skyPalette[nextIndex - 1];
     const next = skyPalette[nextIndex];
     const fraction = (bounded - previous.phase) / (next.phase - previous.phase);
-    const color = name => previous[name].map((value, index) => Math.round(value + (next[name][index] - value) * fraction)).join(',');
+    const sky = Object.fromEntries(['top', 'middle', 'bottom', 'sun', 'glow']
+      .map(name => [name, mixColor(previous[name], next[name], fraction)]));
+    const color = name => sky[name].join(',');
     ['top', 'middle', 'bottom'].forEach(name => skyBackground.style.setProperty(`--sky-${name}`, `rgb(${color(name)})`));
     skyBackground.style.setProperty('--sun-color', `rgb(${color('sun')})`);
     skyBackground.style.setProperty('--sun-rgb', color('sun'));
     skyBackground.style.setProperty('--sky-glow', color('glow'));
     const dawn = skyBlend(-.06, .14, bounded);
-    const night = skyBlend(.87, 1.02, bounded);
-    const sunset = skyBlend(.48, .84, bounded);
+    const night = Math.max(1 - skyBlend(-.18, -.04, bounded), skyBlend(.90, 1.10, bounded));
+    const sunset = skyBlend(.65, .88, bounded);
     skyBackground.style.setProperty('--sky-glow-opacity', String((.20 + .22 * dawn) * (1 - night)));
     skyBackground.style.setProperty('--sun-x', `${12 + bounded * 76}%`);
     skyBackground.style.setProperty('--sun-y', `${92 - Math.sin(bounded * Math.PI) * 65}%`);
-    skyBackground.style.setProperty('--sun-opacity', String(dawn * (1 - skyBlend(.90, 1.02, bounded))));
+    const sunOpacity = dawn * (1 - skyBlend(.90, 1.10, bounded));
+    skyBackground.style.setProperty('--sun-opacity', String(sunOpacity));
     skyBackground.style.setProperty('--sun-scale', String(1 + sunset * .18));
-    const layers = { university: (1 - sunset) * (1 - night), bootcamp: sunset * (1 - night), career: night };
+    const layers = { day: (1 - sunset) * (1 - night), sunset: sunset * (1 - night), night };
     skyScenes.forEach(scene => {
-      const opacity = layers[scene.dataset.chapter];
+      const opacity = layers[scene.dataset.sky];
       scene.style.opacity = String(opacity);
       scene.classList.toggle('is-active', opacity > .001);
     });
+    drawTheme(sky, bounded);
   }
 
-  function finishSkyJourney() {
-    if (skyFrame !== null) window.cancelAnimationFrame(skyFrame);
-    skyFrame = null;
-    skyPreviousTime = null;
-    skyVelocity = 0;
-    skyIntro = false;
-    if (skyTarget === null) return;
-    skyPhase = skyTarget;
-    drawSky(skyPhase);
+  function skyPhaseForTime(now) {
+    const hour = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600 + now.getMilliseconds() / 3600000;
+    const nextIndex = skyHours.findIndex(stop => stop[0] > hour);
+    const [startHour, startPhase] = skyHours[nextIndex - 1];
+    const [endHour, endPhase] = skyHours[nextIndex];
+    return startPhase + (endPhase - startPhase) * (hour - startHour) / (endHour - startHour);
   }
 
-  function advanceSky(timestamp) {
-    skyFrame = null;
-    if (reducedMotion.matches || document.hidden) {
-      finishSkyJourney();
-      return;
-    }
-    const dt = Math.max(0, (timestamp - skyPreviousTime) / 1000);
-    skyPreviousTime = timestamp;
-    const offset = skyPhase - skyTarget;
-    const response = skyIntro ? 3.8 : 6.5;
-    const momentum = skyVelocity + response * offset;
-    const decay = Math.exp(-response * dt);
-    skyPhase = skyTarget + (offset + momentum * dt) * decay;
-    skyVelocity = (skyVelocity - response * momentum * dt) * decay;
-    if (offset * (skyPhase - skyTarget) < 0) {
-      skyPhase = skyTarget;
-      skyVelocity = 0;
-    }
-    if (Math.abs(skyPhase - skyTarget) < .0003 && Math.abs(skyVelocity) < .002) {
-      finishSkyJourney();
-      return;
-    }
-    drawSky(skyPhase);
-    skyFrame = window.requestAnimationFrame(advanceSky);
+  function stopRealtimeSky() {
+    window.clearTimeout(skyTimer);
+    skyTimer = null;
   }
 
-  function setSkyScene(route, progress = 0, initial = false) {
-    const [start, end] = skyRanges[route];
-    const target = start + (end - start) * Math.max(0, Math.min(1, progress));
-    if (target === skyTarget && !initial) return;
-    skyTarget = target;
-    skyIntro = initial && route === 'university' && window.scrollY < 2 &&
-      !reducedMotion.matches && !document.hidden;
-    if (skyIntro) {
-      skyPhase = skyPalette[0].phase;
-      skyVelocity = 0;
-      drawSky(skyPhase);
-    } else if (initial || skyPhase === null || reducedMotion.matches || document.hidden) {
-      finishSkyJourney();
-      return;
-    }
-    if (skyPreviousTime === null) skyPreviousTime = performance.now();
-    if (skyFrame === null) skyFrame = window.requestAnimationFrame(advanceSky);
-  }
-
-  function updateSkyProgress(positions, readingLine, atBottom) {
-    const first = positions[0].y;
-    const last = positions[positions.length - 1].y;
-    // Use the date clock's reading line, including resized or expanded timeline entries.
-    const progress = atBottom ? 1 : (readingLine - first) / Math.max(1, last - first);
-    setSkyScene(activeRoute, progress);
+  function updateRealtimeSky() {
+    stopRealtimeSky();
+    const now = new Date();
+    drawSky(skyPhaseForTime(now));
+    // Read Date on each tick so sleep, clock changes and midnight do not accumulate drift.
+    if (!document.hidden) skyTimer = window.setTimeout(updateRealtimeSky, 1000 - now.getMilliseconds());
   }
 
   function element(tag, className, text) {
@@ -470,7 +539,11 @@
 
   function updateHistoryProgress() {
     historyFrame = null;
-    if (!historyNodes.length || historyList.hidden) return;
+    measureThemeTargets();
+    if (!historyNodes.length || historyList.hidden) {
+      if (currentSkyTheme) drawTheme(currentSkyTheme.sky, currentSkyTheme.phase);
+      return;
+    }
 
     // Read geometry together before updating styles. Expanded details can change every later date.
     const listRect = historyList.getBoundingClientRect();
@@ -481,15 +554,16 @@
     const first = positions[0];
     const last = positions[positions.length - 1];
     const length = Math.max(0, last.y - first.y);
-    const readingLine = Math.max(header.getBoundingClientRect().bottom + 24,
-      Math.min(window.innerHeight * .58, footer.getBoundingClientRect().top - 24));
-    const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    const viewport = scrollViewport.getBoundingClientRect();
+    const readingLine = viewport.top + scrollViewport.clientHeight * .58;
+    const atBottom = scrollViewport.scrollTop + scrollViewport.clientHeight >= scrollViewport.scrollHeight - 2;
     const complete = reducedMotion.matches || atBottom;
     const fill = complete ? length : Math.max(0, Math.min(length, readingLine - first.y));
     // Motion preferences affect the rail, while the date always follows the reading position.
     const reached = positions.map(position => atBottom || position.y <= readingLine);
     const current = reached.lastIndexOf(true);
 
+    if (currentSkyTheme) drawTheme(currentSkyTheme.sky, currentSkyTheme.phase);
     historyList.style.setProperty('--history-rail-left', `${first.x - listRect.left}px`);
     historyList.style.setProperty('--history-rail-top', `${first.y - listRect.top}px`);
     historyList.style.setProperty('--history-rail-height', `${length}px`);
@@ -501,7 +575,6 @@
       row.classList.toggle('is-current', !reducedMotion.matches && index === current);
     });
     updateJourneyClock(positions, readingLine, atBottom);
-    updateSkyProgress(positions, readingLine, atBottom);
   }
 
   function scheduleHistoryProgress() {
@@ -555,7 +628,7 @@
 
   function slideChapter(outgoing, direction) {
     if (!outgoing) return;
-    const distance = document.documentElement.clientWidth * direction;
+    const distance = scrollViewport.clientWidth * direction;
     const options = { duration: 620, easing: 'cubic-bezier(.22,.68,0,1)', fill: 'both' };
     const leavingFrames = [
       { transform: 'translate3d(0,0,0)' },
@@ -579,7 +652,6 @@
   reducedMotion.addEventListener('change', () => {
     if (reducedMotion.matches) {
       clearTransition();
-      finishSkyJourney();
       finishWelcome();
       settleClockDigits();
       finishClockTravel();
@@ -697,12 +769,9 @@
     const outgoing = !firstRender && !reducedMotion.matches && typeof chapter.animate === 'function'
       ? snapshotChapter() : null;
     activeRoute = route;
-    setSkyScene(route, 0, firstRender);
     const index = routes.indexOf(route);
     const number = String(index + 1).padStart(2, '0');
     const page = content[route];
-    document.documentElement.style.setProperty('--accent', page.accent);
-    document.documentElement.style.setProperty('--accent-rgb', page.accentRgb);
     document.title = `${page.title} — 김현우 포트폴리오`;
     document.querySelector('meta[name="description"]').content = `김현우 포트폴리오 · ${page.title} — ${page.description.replace(/\n/g, ' ')}`;
     setText('counter', number);
@@ -747,25 +816,27 @@
     });
     document.getElementById('timeline-progress').style.width = `${index * 50}%`;
     if (!firstRender) {
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      scrollViewport.scrollTo({ top: 0, behavior: 'instant' });
       slideChapter(outgoing, index > previousIndex ? 1 : -1);
       setText('route-announcement', `${page.title} 화면, ${index + 1} / 3`);
     }
+    prepareThemeTargets();
     scheduleHistoryProgress();
   }
 
   document.querySelector('.skip-link').addEventListener('click', event => {
     event.preventDefault();
     // Keep the chapter hash so refresh and browser history retain the current screen.
-    const main = document.getElementById('main');
-    main.focus({ preventScroll: true });
-    main.scrollIntoView({ block: 'start', behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+    scrollViewport.focus({ preventScroll: true });
+    scrollViewport.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
   });
 
   document.getElementById('welcome-continue').addEventListener('click', () => {
     finishWelcome();
     document.getElementById('chapter-title').focus({ preventScroll: true });
-    document.querySelector('.chapter-lead').scrollIntoView({ block: 'start', behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+    const top = document.querySelector('.chapter-lead').getBoundingClientRect().top -
+      scrollViewport.getBoundingClientRect().top + scrollViewport.scrollTop - 24;
+    scrollViewport.scrollTo({ top: Math.max(0, top), behavior: reducedMotion.matches ? 'instant' : 'smooth' });
   });
 
   document.querySelector('.timeline').addEventListener('keydown', event => {
@@ -777,15 +848,16 @@
     location.hash = routes[next];
   });
   window.addEventListener('hashchange', renderRoute);
-  window.addEventListener('scroll', scheduleHistoryProgress, { passive: true });
+  scrollViewport.addEventListener('scroll', scheduleHistoryProgress, { passive: true });
   window.addEventListener('resize', scheduleHistoryProgress, { passive: true });
   document.addEventListener('visibilitychange', () => {
     skyBackground.classList.toggle('is-paused', document.hidden);
     if (document.hidden) {
-      finishSkyJourney();
+      stopRealtimeSky();
       window.clearTimeout(clockTimer);
       clockTimer = null;
     } else {
+      updateRealtimeSky();
       if (clockLive) tickLiveClock();
       scheduleHistoryProgress();
     }
@@ -794,8 +866,10 @@
   if (typeof ResizeObserver === 'function') {
     const historyObserver = new ResizeObserver(scheduleHistoryProgress);
     historyObserver.observe(chapter);
+    historyObserver.observe(scrollViewport);
   }
   if (document.fonts) document.fonts.ready.then(scheduleHistoryProgress);
   skyBackground.classList.toggle('is-paused', document.hidden);
+  updateRealtimeSky();
   renderRoute();
 })();
